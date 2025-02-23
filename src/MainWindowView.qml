@@ -184,6 +184,7 @@ Rectangle {
                 verticalLineLeftMargin: 99.5
 
                 MSwitch {
+                    id: autoScrollSwitch
                     accent: Theme.primary
                     text: qsTr("Auto Scroll")
                     label.color: root.fontColor
@@ -196,6 +197,7 @@ Rectangle {
                 }
 
                 ScrollView {
+                    id: logView
                     anchors.top: parent.horizontalLine.bottom
                     anchors.bottom: parent.bottom
                     anchors.topMargin: 5
@@ -209,6 +211,11 @@ Rectangle {
                         text: mainWindow.proxyOutput
                         width: parent.width
                         wrapMode: Text.WordWrap
+
+                        onTextChanged: {
+                            if (autoScrollSwitch.checked)
+                                logView.ScrollBar.vertical.position = 1.0 - logView.ScrollBar.vertical.size
+                        }
                     }
                 }
             }
