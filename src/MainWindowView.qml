@@ -95,6 +95,7 @@ Rectangle {
                                     text: model.name
                                     label.font.pixelSize: root.fontSize;
                                     checked: model.selected
+                                    customCheckImplementation: true
                                     onClicked: {
                                         mainWindow.configListModel.switchConfig(index)
                                     }
@@ -150,6 +151,21 @@ Rectangle {
                                         icon.width: Size.pixel16
                                     }
                                 }
+                            }
+                        }
+
+                        MButton {
+                            y: profilesList.contentHeight
+                            width: parent.width
+                            accent: Theme.passive
+                            type: MButton.Type.Text
+                            text: qsTr("Add new profile")
+                            leftIcon.iconData: Icons.light.add
+                            leftIcon.size: Size.pixel20
+                            radius: 100
+
+                            onClicked: {
+                                mainWindow.configListModel.importConfig()
                             }
                         }
                     }
