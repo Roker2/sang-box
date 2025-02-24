@@ -6,6 +6,8 @@ ConfigListModel::ConfigListModel(ConfigManagerPtr configManager)
 {
     QObject::connect(m_configManager.get(), &ConfigManager::configRenamed,
                      this, &ConfigListModel::processChanges);
+    QObject::connect(m_configManager.get(), &ConfigManager::configChanged,
+                     this, &ConfigListModel::updateCurrentConfigData);
     QObject::connect(m_configManager.get(), &ConfigManager::beginAddConfig,
                      this, &ConfigListModel::onBeginAddConfig);
     QObject::connect(m_configManager.get(), &ConfigManager::endAddConfig,
@@ -61,9 +63,7 @@ void ConfigListModel::switchConfig(int index)
     if (index >= 0) {
         m_configManager->switchConfig(index);
     }
-    const QModelIndex modelIndex = this->index(index, 0);
     emit dataChanged(prevModelIndex, prevModelIndex, {SelectedRole});
-    emit dataChanged(modelIndex, modelIndex, {SelectedRole});
 }
 
 void ConfigListModel::deleteConfig(int index)
@@ -106,6 +106,12 @@ void ConfigListModel::onBeginAddConfig()
 void ConfigListModel::onEndAddConfig()
 {
     endInsertRows();
+}
+
+void ConfigListModel::updateCurrentConfigData()
+{
+    const QModelIndex modelIndex = this->index(m_configManager->configIndex(), 0);
+    emit dataChanged(modelIndex, modelIndex, {SelectedRole});
 }
 
 QHash<int, QByteArray> ConfigListModel::roleNames() const

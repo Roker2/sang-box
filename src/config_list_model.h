@@ -35,6 +35,7 @@ private slots:
     void processChanges(int index);
     void onBeginAddConfig();
     void onEndAddConfig();
+    void updateCurrentConfigData();
 
 private:
     QHash<int, QByteArray> roleNames() const override;
