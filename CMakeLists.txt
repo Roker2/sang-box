@@ -40,6 +40,7 @@ qt_add_qml_module(qsing-box
         src/MainWindowView.qml
         src/MenuButton.qml
         src/ControlMenu.qml
+        src/ProfilesView.qml
         src/themes/DarkSangTheme.qml
 )
 
