@@ -17,6 +17,8 @@ ConfigManager::ConfigManager(QObject *parent)
     connect(m_configEditor, &ConfigEditor::editedConfigFileSaved, this, &ConfigManager::updateConfigList);
     getConfigFromSettings();
 
+    connect(this, &ConfigManager::endAddConfig, this, &ConfigManager::configUpdated);
+
     SettingsManager settingsManager;
     m_configIndex = settingsManager.configIndex();
 }
@@ -167,9 +169,10 @@ void ConfigManager::deleteAllConfig()
 
 void ConfigManager::appendConfigList(const QString &filePath, const QString &name)
 {
+    emit beginAddConfig();
     m_configList.append(Config{filePath, name});
     saveConfigToSettings();
-    emit configUpdated();
+    emit endAddConfig();
 }
 
 void ConfigManager::updateConfigList(int index, const QString &filePath, const QString &name)

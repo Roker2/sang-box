@@ -32,6 +32,8 @@ signals:
     void configUpdated();
     void configChanged();
     void configRenamed(int index);
+    void beginAddConfig();
+    void endAddConfig();
 
 private slots:
     void appendConfigList(const QString &filePath, const QString &name);
