@@ -149,6 +149,8 @@ Rectangle {
                                         iconData: Icons.light.deleteElement
                                         icon.height: Size.pixel16
                                         icon.width: Size.pixel16
+
+                                        onClicked: mainWindow.configListModel.deleteConfig(index)
                                     }
                                 }
                             }
