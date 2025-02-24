@@ -6,6 +6,10 @@ ConfigListModel::ConfigListModel(ConfigManagerPtr configManager)
 {
     QObject::connect(m_configManager.get(), &ConfigManager::configRenamed,
                      this, &ConfigListModel::processChanges);
+    QObject::connect(m_configManager.get(), &ConfigManager::beginAddConfig,
+                     this, &ConfigListModel::onBeginAddConfig);
+    QObject::connect(m_configManager.get(), &ConfigManager::endAddConfig,
+                     this, &ConfigListModel::onEndAddConfig);
 }
 
 int ConfigListModel::rowCount(const QModelIndex &parent) const
@@ -51,6 +55,8 @@ QModelIndex ConfigListModel::parent(const QModelIndex &child) const
 
 void ConfigListModel::switchConfig(int index)
 {
+    if (index == m_configManager->configIndex())
+        return;
     const QModelIndex prevModelIndex = this->index(m_configManager->configIndex(), 0);
     if (index >= 0) {
         m_configManager->switchConfig(index);
@@ -80,10 +86,26 @@ void ConfigListModel::editConfig(int index)
     }
 }
 
+void ConfigListModel::importConfig()
+{
+    m_configManager->importConfig();
+}
+
 void ConfigListModel::processChanges(int index)
 {
     const QModelIndex modelIndex = this->index(index, 0);
     emit dataChanged(modelIndex, modelIndex);
+}
+
+void ConfigListModel::onBeginAddConfig()
+{
+    const int count = rowCount();
+    beginInsertRows(QModelIndex(), count, count);
+}
+
+void ConfigListModel::onEndAddConfig()
+{
+    endInsertRows();
 }
 
 QHash<int, QByteArray> ConfigListModel::roleNames() const

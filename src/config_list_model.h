@@ -29,9 +29,12 @@ public slots:
     void switchConfig(int index);
     void deleteConfig(int index);
     void editConfig(int index);
+    void importConfig();
 
 private slots:
     void processChanges(int index);
+    void onBeginAddConfig();
+    void onEndAddConfig();
 
 private:
     QHash<int, QByteArray> roleNames() const override;
